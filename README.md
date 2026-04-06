@@ -56,7 +56,7 @@ These skills were developed with the assistance of modern AI tools and reviewed 
 
 They provide structured guidance for AI agents interacting with the TinyPilot API and are intended to be adapted to your specific environment and workflows.
 
-Always validate behavior before using in production systems.
+_**Always validate behavior before using in production systems.**_
 
 ---
 
