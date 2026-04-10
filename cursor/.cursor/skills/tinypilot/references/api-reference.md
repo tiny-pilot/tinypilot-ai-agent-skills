@@ -1,14 +1,34 @@
 # TinyPilot REST API Reference
 
-- Auth: `POST /api/v1/auth`
-- Screenshot: `GET /api/v1/screenshot`
-- Keystroke: `POST /api/v1/keystroke`
-- Mouse: `POST /api/v1/mouseEvent`
-- Paste: `POST /api/v1/paste`
-- State (unofficial): `GET /state`
+## Authentication
 
-## Notes
+- `POST /api/v1/auth` returns `{"token":"<uuid>"}`.
+- Do not include an `Origin` header.
+- Keep token in memory only; do not write to disk.
 
-- Do not send an `Origin` header when authenticating.
-- Keep tokens in memory only.
-- For paste, wait ~100ms per character before pressing Enter.
+## Screenshot
+
+- `GET /api/v1/screenshot`
+- `200` returns JPEG, `204` means no video signal.
+
+## Keystroke
+
+- `POST /api/v1/keystroke`
+- Send `KeyboardEvent.code` plus optional modifiers.
+
+## Mouse
+
+- `POST /api/v1/mouseEvent`
+- Use relative coordinates from 0.0 to 1.0.
+- For clicks: move -> press -> release.
+
+## Paste
+
+- `POST /api/v1/paste`
+- Send `text` + `language` (`en-US`, `en-GB`, `de-DE`).
+- Wait about 100ms per character before confirming input.
+
+## Display State (Unofficial)
+
+- `GET /state`
+- Use `result.source.resolution.width/height` for mouse conversion.
