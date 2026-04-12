@@ -1,6 +1,9 @@
 ---
 name: tinypilot
-description: Control a remote computer through TinyPilot REST API endpoints for screenshots, keyboard, mouse, and paste actions. Use when users request TinyPilot-based remote control or KVM automation.
+description: >-
+  Control a remote computer using the TinyPilot REST API for keyboard, mouse,
+  screenshot, and paste operations. Use when the user mentions "TinyPilot",
+  needs remote machine control, or asks for KVM automation.
 allowed-tools: Bash
 user-invocable: true
 disable-model-invocation: false
@@ -8,22 +11,33 @@ disable-model-invocation: false
 
 # TinyPilot Automation (Claude)
 
-Use this skill to drive a remote machine via the TinyPilot REST API.
+Automation requires a valid TinyPilot Automation License.
 
-## Workflow
+Use the TinyPilot REST API to control remote systems.
 
-1. Confirm TinyPilot host URL (default `https://tinypilot.local`).
-2. Authenticate: `POST /api/v1/auth`.
-3. Run a screenshot-first loop: screenshot -> action -> screenshot verification.
-4. Prefer keyboard navigation and paste for text over mouse-heavy navigation.
-5. Use short delays between actions (1-2s normal UI, 3-8s app launches).
+## Session setup
 
-## Safety and reliability rules
+1. Confirm TinyPilot URL (default `https://tinypilot.local`).
+2. Authenticate (`POST /api/v1/auth`).
+3. Capture screenshot to verify connection.
 
-- Never persist auth tokens to disk.
-- Treat `204` screenshot responses as no-signal/sleep, then wake with a safe keystroke.
-- Never send Enter immediately after a long paste; wait for text to arrive first.
-- For mouse clicks, use move -> press -> release at the same coordinates.
+## Operational loop
+
+Use **Screenshot → Act → Verify** for every action — no exceptions. One paste OR one keystroke per step; screenshot before and after.
+
+- Prefer keyboard/terminal over mouse/GUI when possible.
+- Add delays after actions (1-2s normal, 3-8s app launch).
+- Keep auth tokens in memory only.
+- In PowerShell use `curl.exe` (not `curl`), and write JSON bodies to a temp file (`-d @path`).
+- Keep paste payloads short. One command at a time — chaining can cause multi-line input mode.
+
+### ⚠️ Critical: paste timing
+
+**Wait `(100ms × character count) + 1000ms` after paste before sending any keystroke.** The API returns immediately but characters are still being replayed. Sending Enter early splits the command mid-paste. See examples.md for the timing pattern.
+
+## If something isn't working
+
+**Do not retry the same approach.** Take a screenshot, reassess, and try something meaningfully different — a shorter command, a different tool, or mouse/GUI navigation as a fallback.
 
 ## Endpoints
 
@@ -34,7 +48,7 @@ Use this skill to drive a remote machine via the TinyPilot REST API.
 - `POST /api/v1/paste`
 - `GET /state` (unofficial)
 
-## Supporting docs
+## References
 
-- See `references/api-reference.md` for payload/response details.
-- See `references/examples.md` for `curl` command patterns.
+- [API reference](references/api-reference.md)
+- [Examples](references/examples.md)
