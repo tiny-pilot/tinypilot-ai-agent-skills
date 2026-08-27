@@ -13,7 +13,7 @@ Control a remote machine through the TinyPilot REST API with screenshot-based ve
 ## Procedure
 
 1. Confirm TinyPilot URL and objective.
-2. Authenticate using `POST /api/v1/auth` and capture bearer token. Do not include an `Origin` header.
+2. Use an API key from **System → Automation** (TinyPilot Pro 3.2.0+) as `Authorization: Bearer <API_KEY>`.
 3. Take an initial screenshot with `GET /api/v1/screenshot` (`200` = JPEG image, `204` = no video signal).
 4. Choose one action (keystroke, paste, or mouse event) based on current screen. Prefer keyboard/terminal over mouse/GUI when possible.
 5. Execute the action:
@@ -30,7 +30,7 @@ Control a remote machine through the TinyPilot REST API with screenshot-based ve
 
 - Every control action is followed by a verification screenshot — **Screenshot → Act → Verify**, no exceptions.
 - One paste OR one keystroke per step; never batch paste + keystroke + screenshot together.
-- Token is kept in memory and never written to disk.
+- Prefer env vars for API keys; do not commit keys.
 - Mouse coordinates use current display size from `GET /state` (`result.source.resolution.width/height`) before click actions.
 - In PowerShell use `curl.exe` (not `curl`), and write JSON bodies to a temp file (`-d @path`).
 - Common key codes: `Enter`, `Space`, `Escape`, `Tab`, `Backspace`, `Delete`, `ArrowUp/Down/Left/Right`, `KeyA`–`KeyZ`, `Digit0`–`Digit9`, `F1`–`F12`.
@@ -47,7 +47,7 @@ Control a remote machine through the TinyPilot REST API with screenshot-based ve
 
 ## Forbidden Actions
 
-- Do not store auth tokens in files or write them to disk.
+- Do not commit API keys or paste them into shared logs.
 - Do not assume screen state without a fresh screenshot.
 - Do not send Enter immediately after a long paste — always wait for the paste timing delay.
 - Do not retry the same failing approach — reassess and try a different strategy.
@@ -55,13 +55,12 @@ Control a remote machine through the TinyPilot REST API with screenshot-based ve
 
 ## Constraints
 
-Automation requires a valid TinyPilot Automation License.
+Requires TinyPilot Pro **3.2.0+**, an Automation License, and an API key from System → Automation.
 
 ## Endpoint Quick Reference
 
 | Method | Path | Purpose |
 |--------|------|---------|
-| POST | `/api/v1/auth` | Returns `{"token":"<uuid>"}` |
 | GET | `/api/v1/screenshot` | Current display as JPEG |
 | POST | `/api/v1/keystroke` | Single key press/release |
 | POST | `/api/v1/mouseEvent` | Cursor move/click/wheel |
