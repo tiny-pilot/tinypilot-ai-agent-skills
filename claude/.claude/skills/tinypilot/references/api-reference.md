@@ -2,9 +2,13 @@
 
 ## Authentication
 
-- `POST /api/v1/auth` returns `{"token":"<uuid>"}`.
-- Do not include an `Origin` header.
-- Keep token in memory only; do not write to disk.
+Requires TinyPilot Pro **3.2.0** or later.
+
+- Create an API key under **System → Automation** in the TinyPilot web UI.
+- Send `Authorization: Bearer <API_KEY>` on protected endpoints.
+- Do not use `POST /api/v1/auth` (returns `410 Gone` on 3.2.0+).
+- Prefer an env var such as `TINYPILOT_API_KEY` for curl examples; do not commit keys.
+
 
 ## Screenshot
 
@@ -44,4 +48,4 @@
 
 ## Full official API documentation
 
-See [official-api-docs.md](official-api-docs.md) for the complete TinyPilot REST API reference including full HTTP request/response examples and a working Python sample script.
+See the [TinyPilot REST API docs](https://tinypilotkvm.com/pages/tinypilot-rest-api) for full request/response examples.

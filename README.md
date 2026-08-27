@@ -44,9 +44,10 @@ With TinyPilot and an AI agent, you can:
 
 ## Requirements
 
-- A [TinyPilot device](https://tinypilotkvm.com/products/tinypilot-voyager-3)
+- A [TinyPilot device](https://tinypilotkvm.com/products/tinypilot-voyager-3) running TinyPilot Pro **3.2.0** or later
 - Network access to the device
-- A valid [TinyPilot Automation License](https://tinypilotkvm.com/pages/automation) (required for API-based automation)
+- A valid [TinyPilot Automation License](https://tinypilotkvm.com/pages/automation)
+- An API key from **System → Automation** on the device
 
 ---
 
